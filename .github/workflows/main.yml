@@ -6,7 +6,7 @@ on:
     branches: [ master ]
   workflow_dispatch:
 
-  jobs:
+jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -19,7 +19,7 @@ on:
           name: lint.html
           path: app/build/reports/lint-results-debug.html
 
-     unit-test:
+  unit-test:
     needs: [lint]
     runs-on: ubuntu-latest
     steps:
@@ -35,10 +35,7 @@ on:
           name: unit_test_report
           path: app/build/reports/tests/testDebugUnitTest/
 
-
-
-
-            instrumentation-test:
+  instrumentation-test:
     needs: [unit-test]
     runs-on: macos-latest
     steps:
@@ -57,8 +54,7 @@ on:
           name: instrumentation_test_report
           path: app/build/reports/androidTests/connected/
 
-
-           static-code-analysis:
+  static-code-analysis:
     needs: [instrumentation-test]
     runs-on: ubuntu-latest
     steps:
@@ -75,8 +71,7 @@ on:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-
-          package:
+  package:
     needs: [static-code-analysis]
     name: Generate APK
     runs-on: ubuntu-latest
@@ -95,5 +90,5 @@ on:
       - name: Upload APK
         uses: actions/upload-artifact@v2
         with:
-          name: ci-cd_sample.apk
+          name: cicd.apk
           path: app/build/outputs/apk/debug/app-debug.apk
