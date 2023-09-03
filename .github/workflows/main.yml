@@ -39,6 +39,7 @@ jobs:
 
   package:
     name: Generate APK
+    needs: [lint]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the code
